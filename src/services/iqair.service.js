@@ -50,5 +50,6 @@ const fetchNearestCityData = async (lat, lon) => {
 }
 
 module.exports = {
-    getNearestCityData
+    getNearestCityData,
+    fetchNearestCityData
 }

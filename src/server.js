@@ -5,6 +5,7 @@ const compression = require('compression');
 const express = require('express');
 const routes = require('./routes');
 const middlewares = require('./middlewares');
+const setupCronJobs = require('./cron');
 
 app.use(helmet({ frameguard: { action: 'deny' } }));
 app.use(cors());
@@ -15,6 +16,8 @@ app.use(express.urlencoded({ limit: '1mb', extended: true }));
 app.use('/api/v1', routes);
 
 app.use(...Object.values(middlewares));
+
+setupCronJobs(app);
 
 const config = app.get('config');
 const server = app.listen(config.get('port'), () => console.info(`Server started on port: ${config.get('port')}`));

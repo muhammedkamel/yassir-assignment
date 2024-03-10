@@ -20,6 +20,10 @@ const config = {
         apiKey: process.env.IQAIR_API_KEY,
         apiUrl: process.env.IQAIR_API_URL,
     },
+    paris: {
+        lat: process.env.PARIS_LAT,
+        lon: process.env.PARIS_LON,
+    },
 
     get: function (key) {
         if (!key) {
