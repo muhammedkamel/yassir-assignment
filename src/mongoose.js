@@ -1,11 +1,14 @@
 const mongoose = require('mongoose');
-const { db } = require('../config/app');
+const { mongoUri } = require('../config/app');
 
-module.exports = function setupMongoose(app) {
-    mongoose.connect(`mongodb://${db.username}:${db.password}@${db.host}:${db.port}/${db.database}?authSource=admin`);
+module.exports = async function setupMongoose(app) {
+    try {
+        await mongoose.connect(mongoUri);
 
-    mongoose.connection.on('connected', () => console.log('Connected to MongoDB'));
-    mongoose.connection.on('error', err => console.error('Error connecting to MongoDB', err));
+        console.log('Connected to MongoDB');
+    } catch (err) {
+        console.error('Error connecting to MongoDB', err);
+    }
 
     app.set('mongoose', mongoose);
 }

@@ -4,13 +4,7 @@ const config = {
     env: process.env.APP_ENV,
     port: process.env.APP_PORT,
     host: process.env.APP_HOST,
-    db: {
-        host: process.env.DB_HOST,
-        port: process.env.DB_PORT,
-        username: process.env.DB_USERNAME,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_DATABASE,
-    },
+    mongoUri: process.env.MONGO_URI,
     redis: {
         host: process.env.REDIS_HOST,
         port: process.env.REDIS_PORT,

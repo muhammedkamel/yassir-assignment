@@ -8,5 +8,7 @@ module.exports = async function setupRedis(app) {
         })
         .connect();
 
+    console.log('Connected to redis');
+
     app.set('redisClient', redisClient);
 };

@@ -33,9 +33,7 @@ const getMaxPollution = async (req, res) => {
 const saveAirQualityForCoordinates = async (lat, lon) => {
     const nearestCityData = await fetchNearestCityData(lat, lon);
 
-    const cityAirQuality = new CityAirQuality(nearestCityData);
-
-    await cityAirQuality.save();
+    await CityAirQuality.create(nearestCityData);
 }
 
 module.exports = {
