@@ -38,7 +38,6 @@ const saveAirQualityForCoordinates = async (lat, lon) => {
     await cityAirQuality.save();
 }
 
-
 module.exports = {
     getAirQuality,
     getMaxPollution,
