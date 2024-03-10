@@ -2,8 +2,6 @@ const axios = require('axios');
 const app = require('../app');
 
 const getNearestCityData = async (lat, lon) => {
-    const redisClient = app.get('redisClient');
-
     const cachedData = await getFromCache(lat, lon);
 
     if (cachedData) {
@@ -11,8 +9,6 @@ const getNearestCityData = async (lat, lon) => {
     }
 
     const freshData = await fetchNearestCityData(lat, lon);
-
-    redisClient.set(`lat:${lat}:lng:${lon}`, JSON.stringify(freshData), { EX: 60 });
 
     return freshData;
 }
@@ -39,9 +35,13 @@ const fetchNearestCityData = async (lat, lon) => {
 
     try {
         // @todo handle client errors
-        const result = await axios.get(url);
+        const { data: { data } } = await axios.get(url);
 
-        return result.data.data;
+        const redisClient = app.get('redisClient');
+
+        redisClient.set(`lat:${lat}:lng:${lon}`, JSON.stringify(data), { EX: 60 });
+
+        return data;
     } catch (err) {
         console.error(err);
 

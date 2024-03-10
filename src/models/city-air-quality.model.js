@@ -6,15 +6,15 @@ const cityAirQualitySchema = new Schema({
     state: String,
     country: String,
     location: {
-        type: { type: String, default: 'Point', required: true },
-        coordinates: { type: [Number], index: '2dsphere', required: true }
+        type: { type: String, enum: ['Point'], required: true },
+        coordinates: { type: [Number], required: true }
     },
     current: {
         pollution: {
             ts: { type: Date },
-            aqius: Number,
+            aqius: { type: Number, index: -1 },
             mainus: String,
-            aqicn: Number,
+            aqicn: { type: Number, index: -1 },
             maincn: String
         },
         weather: {
@@ -30,6 +30,8 @@ const cityAirQualitySchema = new Schema({
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
 });
+
+cityAirQualitySchema.index({ location: '2dsphere' });
 
 const CityAirQuality = mongoose.model('CityAirQuality', cityAirQualitySchema, 'city_air_quality');
 
