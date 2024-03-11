@@ -14,13 +14,17 @@
     "mongoose": "^8.2.1",
     "node-cron": "^3.0.3",
     "ramda": "^0.29.1",
-    "redis": "^4.6.13"
+    "redis": "^4.6.13",
+    "supertest": "^6.3.4"
   },
-  "main": "./src/server.js",
+  "main": "./src/app.js",
   "scripts": {
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "test": "jest"
   },
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "jest": "^29.7.0",
     "nodemon": "^3.0.3"
   }
 }

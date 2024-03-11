@@ -1,14 +1,14 @@
 const { createClient } = require('redis');
 const config = require('../config/app');
 
-module.exports = async function setupRedis(app) {
-    const redisClient = await createClient(config.redis)
+const setupRedis = () => {
+    return createClient(config.redis)
         .on('error', (err) => {
             console.log('Redis Client Error', err);
         })
-        .connect();
+        .on('connect', () => {
+            console.log('Redis Client Connected');
+        });
+}
 
-    console.log('Connected to redis');
-
-    app.set('redisClient', redisClient);
-};
+module.exports = setupRedis();
