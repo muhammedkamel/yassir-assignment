@@ -1,50 +1,37 @@
-const axios = require('axios');
-const redis = require('../redis');
-const config = require('../../config/app');
-
-const getNearestCityData = async (lat, lon) => {
-    console.log('original');
-    const cachedData = await getFromCache(lat, lon);
-
-    if (cachedData) {
-        return cachedData;
-    }
-
-    const freshData = await fetchNearestCityData(lat, lon);
-
-    return freshData;
-}
-
-const getFromCache = async (lat, lon) => {
-    try {
-        const airQualityData = await redis.get(`lat:${lat}:lng:${lon}`);
-
-        if (airQualityData) {
-            return JSON.parse(airQualityData);
+const result = {
+    city: "Paris",
+    state: "Ile-de-France",
+    country: "France",
+    location: {
+        type: "Point",
+        coordinates: [2.351666, 48.859425]
+    },
+    current: {
+        pollution: {
+            ts: "2024-03-10T14:00:00.000Z",
+            aqius: 22,
+            mainus: "o3",
+            aqicn: 17,
+            maincn: "o3"
+        },
+        weather: {
+            ts: "2024-03-10T14:00:00.000Z",
+            tp: 10,
+            pr: 995,
+            hu: 79,
+            ws: 1.54,
+            wd: 230,
+            ic: "04d"
         }
-    } catch (err) {
-        console.error(err);
     }
+};
 
-    return null;
-}
 
-const fetchNearestCityData = async (lat, lon) => {
-    const url = `${config.get('iqair.apiUrl')}/v2/nearest_city?lat=${lat}&lon=${lon}&key=${config.get('iqair.apiKey')}`;
+const getNearestCityData = async (lat, lon) => result;
 
-    try {
-        // @todo handle client errors
-        const { data: { data } } = await axios.get(url);
+const getFromCache = async (lat, lon) => result;
 
-        redis.set(`lat:${lat}:lng:${lon}`, JSON.stringify(data), { EX: 60 });
-
-        return data;
-    } catch (err) {
-        console.error(err);
-
-        throw new Error('IQAir service currently not available');
-    }
-}
+const fetchNearestCityData = async (lat, lon) => result;
 
 module.exports = {
     getNearestCityData,
