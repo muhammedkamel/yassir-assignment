@@ -3,12 +3,16 @@ const MaxPollutionResource = require('../resources/max-pollution.resource');
 const { getNearestCityData, fetchNearestCityData } = require('./iqair.service');
 const CityAirQuality = require('../models/city-air-quality.model');
 
-const getAirQuality = async (req, res) => {
+const getAirQuality = async (req, res, next) => {
     const { lat, lon } = req.query;
 
-    const nearestCityData = await getNearestCityData(lat, lon);
+    try {
+        const nearestCityData = await getNearestCityData(lat, lon);
 
-    return res.json(AirQualityResource(nearestCityData));
+        return res.json(AirQualityResource(nearestCityData));
+    } catch (err) {
+        next(err);
+    }
 }
 
 const getMaxPollution = async (req, res) => {

@@ -1,6 +1,10 @@
 const createError = require('http-errors');
 
 module.exports = (err, req, res, next) => {
+    if (!err.error?.details) {
+        return next(err);
+    }
+
     next(
         createError(
             400,
