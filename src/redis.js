@@ -1,8 +1,15 @@
-const { createClient } = require('redis');
+const redis = require('redis');
 const config = require('../config/app');
 
 const setupRedis = () => {
-    return createClient(config.redis)
+    return redis.createClient({
+        socket: {
+            host: config.get('redis.host'),
+            port: config.get('redis.port'),
+        },
+        username: config.get('redis.username'),
+        password: config.get('redis.password'),
+    })
         .on('error', (err) => {
             console.log('Redis Client Error', err);
         })

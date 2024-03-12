@@ -8,12 +8,15 @@ const middlewares = require('./middlewares');
 const setupCronJobs = require('./cron');
 const mongoose = require('mongoose');
 const redis = require('./redis');
+const setupSwagger = require('./swagger');
 
 mongoose.connect(config.mongoUri);
 redis.connect();
 setupCronJobs();
 
 const app = express();
+
+setupSwagger(app);
 
 app.use(helmet({ frameguard: { action: 'deny' } }));
 app.use(cors());

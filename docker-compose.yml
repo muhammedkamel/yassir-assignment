@@ -1,24 +1,28 @@
 version: '3.8'
 
 services:
-  # app:
-  #   build: .
-  #   ports:
-  #   - 3000:3000
-  #   depends_on:
-  #     - redis
-  #     - mongodb
-  #   networks:
-  #     - iqair-app-network
-  #   volumes:
-  #     - .:/usr/src/app
+  app:
+    build: .
+    ports:
+    - 3000:3000
+    depends_on:
+      - redis
+      - mongodb
+    restart: on-failure
+    networks:
+      - iqair-app-network
+    volumes:
+      - .:/usr/src/app
   
   redis:
     image: redis:7.2-alpine
     restart: always
     ports:
       - 6379:6379
+    environment:
+      REDIS_PASSWORD: Passw0rd
     volumes:
+      - redis-config:/usr/local/etc/redis
       - redis-data:/data
     networks:
       - iqair-app-network
@@ -29,15 +33,20 @@ services:
     ports:
       - "27017:27017"
     volumes:
+      - mongodb-config:/etc/mongo
       - mongodb-data:/data/db
     environment:
       MONGO_INITDB_ROOT_USERNAME: app
       MONGO_INITDB_ROOT_PASSWORD: Passw0rd
+    networks:
+      - iqair-app-network
 
 networks:
   iqair-app-network:
     driver: bridge
 
 volumes:
+  redis-config:
   redis-data:
+  mongodb-config:
   mongodb-data:
